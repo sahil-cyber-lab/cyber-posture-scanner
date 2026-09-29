@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Scan History</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 35px;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin: 0;
+        }
+
+
+        /* =========================
+           FILTER SECTION
+        ========================= */
+
+        .filter-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.06);
+
+            margin-bottom: 25px;
+        }
+
+        .filter-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .filters {
+            display: grid;
+
+            grid-template-columns:
+                2fr 1fr 1fr auto;
+
+            gap: 12px;
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .reset-button {
+            border: none;
+
+            padding: 11px 16px;
+
+            border-radius: 6px;
+
+            background: #6b7280;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+        .reset-button:hover {
+            background: #4b5563;
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            background: white;
+
+            border-radius: 10px;
+
+            overflow-x: auto;
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 14px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid #eee;
+        }
+
+        th {
+            background: #f2f4f7;
+            color: #374151;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+
+        /* =========================
+           TARGET
+        ========================= */
+
+        .target {
+            font-weight: 600;
+            color: #111827;
+
+            max-width: 260px;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           SCORE
+        ========================= */
+
+        .score {
+            font-weight: bold;
+        }
+
+        .score-high {
+            color: #16a34a;
+        }
+
+        .score-medium {
+            color: #d97706;
+        }
+
+        .score-low {
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           RISK
+        ========================= */
+
+        .risk {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border-radius: 5px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .high {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .medium {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .informational {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
+        .actions {
+            display: flex;
+
+            gap: 8px;
+
+            white-space: nowrap;
+        }
+
+        .action {
+            display: inline-block;
+
+            padding: 7px 10px;
+
+            border-radius: 5px;
+
+            text-decoration: none;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        /* DETAILS */
+
+        .details {
+            background: #2563eb;
+            color: white;
+        }
+
+        .details:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* COMPARE */
+
+        .compare {
+            background: #059669;
+            color: white;
+        }
+
+        .compare:hover {
+            background: #047857;
+        }
+
+
+        /* PDF */
+
+        .report {
+            background: #374151;
+            color: white;
+        }
+
+        .report:hover {
+            background: #1f2937;
+        }
+
+
+        /* =========================
+           RESULT COUNT
+        ========================= */
+
+        .result-info {
+            margin-bottom: 12px;
+
+            color: #6b7280;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           NO RESULTS
+        ========================= */
+
+        .no-results {
+            display: none;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            text-align: center;
+
+            color: #6b7280;
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        /* =========================
+           EMPTY DATABASE
+        ========================= */
+
+        .empty {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 10px
+                rgba(0, 0, 0, 0.08);
+
+            color: #666;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .buttons {
+            margin-top: 25px;
+        }
+
+        .button {
+            display: inline-block;
+
+            padding: 11px 18px;
+
+            margin-right: 10px;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            color: white;
+
+            background: #2563eb;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .dashboard-button {
+            background: #4b5563;
+        }
+
+        .dashboard-button:hover {
+            background: #374151;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .actions {
+                flex-wrap: wrap;
+            }
+
+        }
+
+
+        @media (max-width: 900px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action {
+                text-align: center;
+            }
+
+            .button {
+                margin-bottom: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <h1>
+            📋 Scan History
+        </h1>
+
+        <p class="subtitle">
+            View and manage all security scans performed from your account.
+        </p>
+
+    </div>
+
+
+    {% if scans %}
+
+
+    <!-- =========================
+         FILTERS
+    ========================= -->
+
+    <div class="filter-box">
+
+        <div class="filter-title">
+            Search & Filter Scans
+        </div>
+
+
+        <div class="filters">
+
+
+            <!-- SEARCH -->
+
+            <input
+                type="text"
+                id="searchInput"
+                class="filter-input"
+                placeholder="Search target..."
+            >
+
+
+            <!-- RISK FILTER -->
+
+            <select
+                id="riskFilter"
+                class="filter-select"
+            >
+
+                <option value="">
+                    All Risk Levels
+                </option>
+
+                <option value="High">
+                    High
+                </option>
+
+                <option value="Medium">
+                    Medium
+                </option>
+
+                <option value="Low">
+                    Low
+                </option>
+
+            </select>
+
+
+            <!-- TARGET TYPE FILTER -->
+
+            <select
+                id="typeFilter"
+                class="filter-select"
+            >
+
+                <option value="">
+                    All Target Types
+                </option>
+
+                <option value="IP address">
+                    IP Address
+                </option>
+
+                <option value="URL">
+                    URL
+                </option>
+
+                <option value="Domain">
+                    Domain
+                </option>
+
+            </select>
+
+
+            <!-- RESET -->
+
+            <button
+                class="reset-button"
+                onclick="resetFilters()"
+            >
+                Reset
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RESULT COUNT
+    ========================= -->
+
+    <div class="result-info">
+
+        Showing
+        <strong id="resultCount">
+            {{ scans|length }}
+        </strong>
+        scan(s)
+
+    </div>
+
+
+    <!-- =========================
+         TABLE
+    ========================= -->
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Target
+                    </th>
+
+                    <th>
+                        Type
+                    </th>
+
+                    <th>
+                        Security Score
+                    </th>
+
+                    <th>
+                        Risk Level
+                    </th>
+
+                    <th>
+                        Risk Points
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="scanTableBody">
+
+
+                {% for scan in scans %}
+
+                <tr
+                    class="scan-row"
+
+                    data-target="{{ scan.target|lower }}"
+
+                    data-type="{{ scan.target_type }}"
+
+                    data-risk="{{ scan.risk_level }}"
+                >
+
+
+                    <!-- TARGET -->
+
+                    <td class="target">
+
+                        {{ scan.target }}
+
+                    </td>
+
+
+                    <!-- TYPE -->
+
+                    <td>
+
+                        {{ scan.target_type }}
+
+                    </td>
+
+
+                    <!-- SCORE -->
+
+                    <td>
+
+                        {% if scan.score >= 80 %}
+
+                            <span class="score score-high">
+                                {{ scan.score }}/100
+                            </span>
+
+                        {% elif scan.score >= 60 %}
+
+                            <span class="score score-medium">
+                                {{ scan.score }}/100
+                            </span>
+
+                        {% else %}
+
+                            <span class="score score-low">
+                                {{ scan.score }}/100
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- RISK -->
+
+                    <td>
+
+                        {% if scan.risk_level == "High" %}
+
+                            <span class="risk high">
+                                High
+                            </span>
+
+                        {% elif scan.risk_level == "Medium" %}
+
+                            <span class="risk medium">
+                                Medium
+                            </span>
+
+                        {% elif scan.risk_level == "Low" %}
+
+                            <span class="risk low">
+                                Low
+                            </span>
+
+                        {% else %}
+
+                            <span class="risk informational">
+                                {{ scan.risk_level }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- RISK POINTS -->
+
+                    <td>
+
+                        {{ scan.total_risk }}
+
+                    </td>
+
+
+                    <!-- DATE -->
+
+                    <td>
+
+                        {{ scan.created_at|date:"d M Y, h:i A" }}
+
+                    </td>
+
+
+                    <!-- ACTIONS -->
+
+                    <td>
+
+                        <div class="actions">
+
+
+                            <!-- DETAILS -->
+
+                            <a
+                                class="action details"
+                                href="/history/{{ scan.id }}/"
+                            >
+                                Details
+                            </a>
+
+
+                            <!-- COMPARE -->
+
+                            <a
+                                class="action compare"
+                                href="/compare/{{ scan.id }}/"
+                            >
+                                Compare
+                            </a>
+
+
+                            <!-- PDF -->
+
+                            <a
+                                class="action report"
+                                href="/history/{{ scan.id }}/report/"
+                            >
+                                PDF
+                            </a>
+
+
+                        </div>
+
+                    </td>
+
+
+                </tr>
+
+                {% endfor %}
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- =========================
+         NO FILTER RESULTS
+    ========================= -->
+
+    <div
+        id="noResults"
+        class="no-results"
+    >
+
+        <h3>
+            No matching scans found
+        </h3>
+
+        <p>
+            Try changing your search or filters.
+        </p>
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- =========================
+         EMPTY DATABASE
+    ========================= -->
+
+    <div class="empty">
+
+        <h3>
+            No scans found.
+        </h3>
+
+        <p>
+            You have not performed any security scans yet.
+        </p>
+
+    </div>
+
+
+    {% endif %}
+
+
+    <!-- =========================
+         NAVIGATION BUTTONS
+    ========================= -->
+
+    <div class="buttons">
+
+        <a
+            class="button"
+            href="/scan/"
+        >
+            🔍 Start New Scan
+        </a>
+
+
+        <a
+            class="button dashboard-button"
+            href="/dashboard/"
+        >
+            📊 Dashboard
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT FILTER
+========================= -->
+
+<script>
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const riskFilter =
+        document.getElementById("riskFilter");
+
+    const typeFilter =
+        document.getElementById("typeFilter");
+
+    const rows =
+        document.querySelectorAll(".scan-row");
+
+    const resultCount =
+        document.getElementById("resultCount");
+
+    const noResults =
+        document.getElementById("noResults");
+
+
+    function filterScans() {
+
+        const searchValue =
+            searchInput.value
+                .toLowerCase()
+                .trim();
+
+        const riskValue =
+            riskFilter.value;
+
+        const typeValue =
+            typeFilter.value;
+
+
+        let visibleCount = 0;
+
+
+        rows.forEach(function(row) {
+
+            const target =
+                row.dataset.target;
+
+            const risk =
+                row.dataset.risk;
+
+            const type =
+                row.dataset.type;
+
+
+            const matchesSearch =
+                target.includes(searchValue);
+
+
+            const matchesRisk =
+                riskValue === ""
+                || risk === riskValue;
+
+
+            const matchesType =
+                typeValue === ""
+                || type === typeValue;
+
+
+            if (
+                matchesSearch
+                && matchesRisk
+                && matchesType
+            ) {
+
+                row.style.display = "";
+
+                visibleCount++;
+
+            }
+
+            else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        resultCount.textContent =
+            visibleCount;
+
+
+        if (visibleCount === 0) {
+
+            noResults.style.display =
+                "block";
+
+        }
+
+        else {
+
+            noResults.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    function resetFilters() {
+
+        searchInput.value = "";
+
+        riskFilter.value = "";
+
+        typeFilter.value = "";
+
+        filterScans();
+
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        filterScans
+    );
+
+
+    riskFilter.addEventListener(
+        "change",
+        filterScans
+    );
+
+
+    typeFilter.addEventListener(
+        "change",
+        filterScans
+    );
+
+</script>
+
+
+</body>
+
+</html>

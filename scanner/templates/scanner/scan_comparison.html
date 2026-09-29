@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scan Comparison</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 35px;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 0 0 20px;
+            color: #111827;
+        }
+
+        /* =========================
+           TARGET
+        ========================= */
+
+        .target-box {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .target-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .target-value {
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        /* =========================
+           COMPARISON CARDS
+        ========================= */
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .comparison-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            padding: 22px;
+            border-radius: 9px;
+        }
+
+        .comparison-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .comparison-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .previous {
+            border-left: 5px solid #6b7280;
+        }
+
+        .current {
+            border-left: 5px solid #2563eb;
+        }
+
+        /* =========================
+           SCORE CHANGE
+        ========================= */
+
+        .score-change {
+            text-align: center;
+            padding: 25px;
+            border-radius: 9px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .score-change-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .score-change-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .improved {
+            color: #15803d;
+        }
+
+        .declined {
+            color: #b91c1c;
+        }
+
+        .unchanged {
+            color: #6b7280;
+        }
+
+        /* =========================
+           RISK
+        ========================= */
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .risk-card {
+            padding: 18px;
+            border-radius: 8px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .risk-label {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .risk-value {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .risk-high {
+            color: #b91c1c;
+        }
+
+        .risk-medium {
+            color: #b45309;
+        }
+
+        .risk-low {
+            color: #15803d;
+        }
+
+        .risk-info {
+            color: #1d4ed8;
+        }
+
+        /* =========================
+           FINDING COUNTS
+        ========================= */
+
+        .finding-count-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .count-card {
+            padding: 22px;
+            border-radius: 9px;
+            text-align: center;
+        }
+
+        .new-card {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+
+        .resolved-card {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .unchanged-card {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+        }
+
+        .count-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .new-card .count-number {
+            color: #b91c1c;
+        }
+
+        .resolved-card .count-number {
+            color: #15803d;
+        }
+
+        .unchanged-card .count-number {
+            color: #4b5563;
+        }
+
+        .count-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        /* =========================
+           FINDING LISTS
+        ========================= */
+
+        .finding-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .finding-item {
+            padding: 15px;
+            border-radius: 7px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .finding-title {
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .finding-details {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .new-item {
+            border-left: 4px solid #dc2626;
+        }
+
+        .resolved-item {
+            border-left: 4px solid #16a34a;
+        }
+
+        .unchanged-item {
+            border-left: 4px solid #9ca3af;
+        }
+
+        .empty-box {
+            padding: 18px;
+            text-align: center;
+            border-radius: 7px;
+            background: #f9fafb;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
+        }
+
+        /* =========================
+           NO PREVIOUS SCAN
+        ========================= */
+
+        .no-comparison {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 25px;
+            border-radius: 9px;
+            color: #1e40af;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 17px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .history-button {
+            background: #4b5563;
+        }
+
+        .scan-button {
+            background: #2563eb;
+        }
+
+        .detail-button {
+            background: #059669;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .comparison-grid,
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .finding-count-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+            .comparison-value {
+                font-size: 24px;
+            }
+
+            .score-change-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <div class="header">
+
+        <h1>
+            📊 Scan Comparison
+        </h1>
+
+        <p>
+            Compare the current security posture with the previous scan.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         TARGET
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            🎯 Target
+        </h2>
+
+        <div class="target-box">
+
+            <div class="target-label">
+                Scanned Target
+            </div>
+
+            <div class="target-value">
+                {{ current_scan.target }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% if comparison %}
+
+    <!-- =========================
+         SCORE COMPARISON
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            📈 Security Score Comparison
+        </h2>
+
+        <div class="comparison-grid">
+
+            <div class="comparison-card previous">
+
+                <div class="comparison-label">
+                    Previous Scan
+                </div>
+
+                <div class="comparison-value">
+                    {{ comparison.previous_score }}/100
+                </div>
+
+            </div>
+
+
+            <div class="comparison-card current">
+
+                <div class="comparison-label">
+                    Current Scan
+                </div>
+
+                <div class="comparison-value">
+                    {{ comparison.current_score }}/100
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="score-change">
+
+            <div class="score-change-label">
+                Score Change
+            </div>
+
+            {% if comparison.score_change > 0 %}
+
+                <div class="score-change-value improved">
+                    +{{ comparison.score_change }}
+                </div>
+
+                <div>
+                    Security score improved
+                </div>
+
+            {% elif comparison.score_change < 0 %}
+
+                <div class="score-change-value declined">
+                    {{ comparison.score_change }}
+                </div>
+
+                <div>
+                    Security score decreased
+                </div>
+
+            {% else %}
+
+                <div class="score-change-value unchanged">
+                    0
+                </div>
+
+                <div>
+                    Security score unchanged
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RISK COMPARISON
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            ⚠️ Risk Comparison
+        </h2>
+
+        <div class="risk-grid">
+
+            <div class="risk-card">
+
+                <span class="risk-label">
+                    Previous Risk Level
+                </span>
+
+                <div class="risk-value
+                    {% if comparison.previous_risk == 'High' %}
+                        risk-high
+                    {% elif comparison.previous_risk == 'Medium' %}
+                        risk-medium
+                    {% elif comparison.previous_risk == 'Low' %}
+                        risk-low
+                    {% else %}
+                        risk-info
+                    {% endif %}
+                ">
+
+                    {{ comparison.previous_risk }}
+
+                </div>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <span class="risk-label">
+                    Current Risk Level
+                </span>
+
+                <div class="risk-value
+                    {% if comparison.current_risk == 'High' %}
+                        risk-high
+                    {% elif comparison.current_risk == 'Medium' %}
+                        risk-medium
+                    {% elif comparison.current_risk == 'Low' %}
+                        risk-low
+                    {% else %}
+                        risk-info
+                    {% endif %}
+                ">
+
+                    {{ comparison.current_risk }}
+
+                </div>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <span class="risk-label">
+                    Previous Risk Points
+                </span>
+
+                <div class="risk-value">
+                    {{ comparison.previous_total_risk }}
+                </div>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <span class="risk-label">
+                    Current Risk Points
+                </span>
+
+                <div class="risk-value">
+                    {{ comparison.current_total_risk }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         FINDING SUMMARY
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            🔍 Finding Changes
+        </h2>
+
+        <div class="finding-count-grid">
+
+            <div class="count-card new-card">
+
+                <div class="count-number">
+                    {{ comparison.new_count }}
+                </div>
+
+                <div class="count-label">
+                    New Findings
+                </div>
+
+            </div>
+
+
+            <div class="count-card resolved-card">
+
+                <div class="count-number">
+                    {{ comparison.resolved_count }}
+                </div>
+
+                <div class="count-label">
+                    Resolved Findings
+                </div>
+
+            </div>
+
+
+            <div class="count-card unchanged-card">
+
+                <div class="count-number">
+                    {{ comparison.unchanged_count }}
+                </div>
+
+                <div class="count-label">
+                    Unchanged Findings
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         NEW FINDINGS
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            🆕 New Findings
+        </h2>
+
+        {% if comparison.new_findings %}
+
+            <div class="finding-list">
+
+                {% for finding in comparison.new_findings %}
+
+                    <div class="finding-item new-item">
+
+                        <div class="finding-title">
+                            {{ finding.0 }}
+                        </div>
+
+                        <div class="finding-details">
+
+                            Port:
+                            {{ finding.1 }}
+
+                            &nbsp; | &nbsp;
+
+                            Service:
+                            {{ finding.2 }}
+
+                            {% if finding.3 %}
+                                &nbsp; | &nbsp;
+                                Product:
+                                {{ finding.3 }}
+                            {% endif %}
+
+                            {% if finding.4 %}
+                                &nbsp; | &nbsp;
+                                Version:
+                                {{ finding.4 }}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-box">
+                No new findings were detected.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         RESOLVED FINDINGS
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            ✅ Resolved Findings
+        </h2>
+
+        {% if comparison.resolved_findings %}
+
+            <div class="finding-list">
+
+                {% for finding in comparison.resolved_findings %}
+
+                    <div class="finding-item resolved-item">
+
+                        <div class="finding-title">
+                            {{ finding.0 }}
+                        </div>
+
+                        <div class="finding-details">
+
+                            Port:
+                            {{ finding.1 }}
+
+                            &nbsp; | &nbsp;
+
+                            Service:
+                            {{ finding.2 }}
+
+                            {% if finding.3 %}
+                                &nbsp; | &nbsp;
+                                Product:
+                                {{ finding.3 }}
+                            {% endif %}
+
+                            {% if finding.4 %}
+                                &nbsp; | &nbsp;
+                                Version:
+                                {{ finding.4 }}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-box">
+                No findings were resolved between these scans.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================
+         UNCHANGED FINDINGS
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            ➖ Unchanged Findings
+        </h2>
+
+        {% if comparison.unchanged_findings %}
+
+            <div class="finding-list">
+
+                {% for finding in comparison.unchanged_findings %}
+
+                    <div class="finding-item unchanged-item">
+
+                        <div class="finding-title">
+                            {{ finding.0 }}
+                        </div>
+
+                        <div class="finding-details">
+
+                            Port:
+                            {{ finding.1 }}
+
+                            &nbsp; | &nbsp;
+
+                            Service:
+                            {{ finding.2 }}
+
+                            {% if finding.3 %}
+                                &nbsp; | &nbsp;
+                                Product:
+                                {{ finding.3 }}
+                            {% endif %}
+
+                            {% if finding.4 %}
+                                &nbsp; | &nbsp;
+                                Version:
+                                {{ finding.4 }}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-box">
+                No unchanged findings.
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- =========================
+         NO PREVIOUS SCAN
+    ========================= -->
+
+    <div class="section">
+
+        <div class="no-comparison">
+
+            <strong>ℹ️ No previous scan available.</strong>
+
+            <br><br>
+
+            This target does not have an earlier scan to compare
+            against. Run another scan for the same target and then
+            use Scan Comparison to track changes in the security
+            posture.
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =========================
+         BUTTONS
+    ========================= -->
+
+    <div class="buttons">
+
+        <a
+            href="/history/"
+            class="button history-button"
+        >
+            ← Back to History
+        </a>
+
+
+        <a
+            href="/scan/"
+            class="button scan-button"
+        >
+            🔍 New Scan
+        </a>
+
+
+        <a
+            href="/history/{{ current_scan.id }}/"
+            class="button detail-button"
+        >
+            📋 Current Scan Details
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

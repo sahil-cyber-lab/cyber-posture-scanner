@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Security Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1f2937;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 9px 13px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            background: #374151;
+        }
+
+        .logout {
+            background: #dc2626;
+        }
+
+        .logout:hover {
+            background: #b91c1c !important;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            max-width: 1250px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-size: 30px;
+            margin-bottom: 7px;
+            color: #111827;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-title {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .stat-description {
+            margin-top: 7px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           ANALYTICS GRID
+        ========================= */
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.06);
+            margin-bottom: 25px;
+        }
+
+        .analytics-grid .section {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: #111827;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: -12px;
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           RISK DISTRIBUTION
+        ========================= */
+
+        .risk-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .risk-item {
+            width: 100%;
+        }
+
+        .risk-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .risk-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .risk-count {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .risk-track {
+            height: 13px;
+            width: 100%;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .risk-bar {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .risk-high-bar {
+            background: #dc2626;
+        }
+
+        .risk-medium-bar {
+            background: #f59e0b;
+        }
+
+        .risk-low-bar {
+            background: #16a34a;
+        }
+
+
+        /* =========================
+           SEVERITY
+        ========================= */
+
+        .severity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .severity-item {
+            width: 100%;
+        }
+
+        .severity-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .severity-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .severity-count {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .severity-track {
+            width: 100%;
+            height: 13px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .severity-bar {
+            height: 100%;
+            border-radius: 20px;
+        }
+
+        .severity-high {
+            background: #dc2626;
+        }
+
+        .severity-medium {
+            background: #f59e0b;
+        }
+
+        .severity-low {
+            background: #16a34a;
+        }
+
+
+        /* =========================
+           SCORE OVERVIEW
+        ========================= */
+
+        .score-panel {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .score-circle {
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f9fafb;
+            border: 10px solid #e5e7eb;
+        }
+
+        .score-number {
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .score-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        .score-progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 9px;
+        }
+
+        .score-progress-title {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .score-progress-value {
+            font-weight: bold;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 17px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 20px;
+            width: {{ latest_scan.score|default:0 }}%;
+
+            {% if latest_scan %}
+
+                {% if latest_scan.risk_level == "Low" %}
+
+                    background: #16a34a;
+
+                {% elif latest_scan.risk_level == "Medium" %}
+
+                    background: #f59e0b;
+
+                {% else %}
+
+                    background: #dc2626;
+
+                {% endif %}
+
+            {% else %}
+
+                background: #9ca3af;
+
+            {% endif %}
+        }
+
+        .score-description {
+            margin-top: 12px;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           SCORE COLORS
+        ========================= */
+
+        .score-good {
+            color: #16a34a;
+        }
+
+        .score-medium {
+            color: #d97706;
+        }
+
+        .score-bad {
+            color: #dc2626;
+        }
+
+
+        /* =========================
+           RISK SUMMARY CARDS
+        ========================= */
+
+        .risk-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .risk-card {
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 5px solid;
+            background: #f9fafb;
+        }
+
+        .risk-card-title {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .risk-card-number {
+            font-size: 27px;
+            font-weight: bold;
+            margin-top: 7px;
+        }
+
+        .risk-card.high {
+            border-color: #dc2626;
+        }
+
+        .risk-card.medium {
+            border-color: #f59e0b;
+        }
+
+        .risk-card.low {
+            border-color: #16a34a;
+        }
+
+
+        /* =========================
+           LATEST SCAN
+        ========================= */
+
+        .latest-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .latest-item {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .latest-label {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .latest-value {
+            font-weight: bold;
+            font-size: 17px;
+            word-break: break-word;
+        }
+
+
+        /* =========================
+           SECURITY POSTURE TRENDS
+        ========================= */
+
+        .trend-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .trend-summary-card {
+            background: #f9fafb;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .trend-label {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .trend-value {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .trend-table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .trend-table-container table {
+            min-width: 850px;
+        }
+
+        .trend-table-container tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .trend-table-container th {
+            white-space: nowrap;
+        }
+
+        .trend-table-container td {
+            vertical-align: middle;
+        }
+
+
+        /* =========================
+           BADGES
+        ========================= */
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .badge-high {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .badge-medium {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge-low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f4f6;
+            text-align: left;
+            padding: 13px;
+            font-size: 12px;
+            color: #374151;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+
+        tbody tr:hover {
+            background: #f9fafb;
+        }
+
+        .target-cell {
+            font-weight: 600;
+            max-width: 250px;
+            word-break: break-word;
+        }
+
+        .view-btn {
+            display: inline-block;
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 7px 11px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .view-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .new-scan {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            margin-top: 18px;
+            font-size: 14px;
+        }
+
+        .new-scan:hover {
+            background: #1d4ed8;
+        }
+
+        .history-btn {
+            background: #4b5563;
+        }
+
+        .history-btn:hover {
+            background: #374151;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .latest-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .trend-summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .risk-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .latest-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trend-summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-panel {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .score-circle {
+                margin: auto;
+            }
+
+            .container {
+                margin-top: 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<div class="navbar">
+
+    <div class="logo">
+        🛡️ Cybersecurity Posture Scanner
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard/">
+            Dashboard
+        </a>
+
+        <a href="/scan/">
+            New Scan
+        </a>
+
+        <a href="/history/">
+            History
+        </a>
+
+        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+         {% csrf_token %}
+
+        <button type="submit" class="logout">
+        Logout
+        </button>
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-title">
+
+        <h1>
+            Security Dashboard
+        </h1>
+
+        <p>
+            Overview of your cybersecurity assessments
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         STATISTICS
+    ========================= -->
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Total Scans
+            </div>
+
+            <div class="stat-value">
+                {{ total_scans }}
+            </div>
+
+            <div class="stat-description">
+                Security assessments performed
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Average Security Score
+            </div>
+
+            <div class="stat-value">
+
+                {% if average_score %}
+
+                    {{ average_score|floatformat:1 }}/100
+
+                {% else %}
+
+                    N/A
+
+                {% endif %}
+
+            </div>
+
+            <div class="stat-description">
+                Average score across your scans
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                High Risk Scans
+            </div>
+
+            <div class="stat-value">
+                {{ high_risk }}
+            </div>
+
+            <div class="stat-description">
+                Scans requiring attention
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                Medium Risk Scans
+            </div>
+
+            <div class="stat-value">
+                {{ medium_risk }}
+            </div>
+
+            <div class="stat-description">
+                Scans requiring review
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         ANALYTICS
+    ========================= -->
+
+    <div class="analytics-grid">
+
+
+        <!-- RISK DISTRIBUTION -->
+
+        <div class="section">
+
+            <h2 class="section-title">
+                Risk Distribution
+            </h2>
+
+            <p class="section-subtitle">
+                Distribution of risk levels across your scans.
+            </p>
+
+
+            <div class="risk-list">
+
+
+                <!-- HIGH -->
+
+                <div class="risk-item">
+
+                    <div class="risk-header">
+
+                        <span class="risk-name">
+                            High Risk
+                        </span>
+
+                        <span class="risk-count">
+                            {{ high_risk }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-track">
+
+                        {% if total_scans > 0 %}
+
+                            <div
+                                class="risk-bar risk-high-bar"
+                                style="width:
+                                    {% widthratio high_risk total_scans 100 %}%;"
+                            >
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- MEDIUM -->
+
+                <div class="risk-item">
+
+                    <div class="risk-header">
+
+                        <span class="risk-name">
+                            Medium Risk
+                        </span>
+
+                        <span class="risk-count">
+                            {{ medium_risk }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-track">
+
+                        {% if total_scans > 0 %}
+
+                            <div
+                                class="risk-bar risk-medium-bar"
+                                style="width:
+                                    {% widthratio medium_risk total_scans 100 %}%;"
+                            >
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOW -->
+
+                <div class="risk-item">
+
+                    <div class="risk-header">
+
+                        <span class="risk-name">
+                            Low Risk
+                        </span>
+
+                        <span class="risk-count">
+                            {{ low_risk }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-track">
+
+                        {% if total_scans > 0 %}
+
+                            <div
+                                class="risk-bar risk-low-bar"
+                                style="width:
+                                    {% widthratio low_risk total_scans 100 %}%;"
+                            >
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- FINDING SEVERITY -->
+
+        <div class="section">
+
+            <h2 class="section-title">
+                Finding Severity
+            </h2>
+
+            <p class="section-subtitle">
+                Severity distribution of detected findings.
+            </p>
+
+
+            <div class="severity-list">
+
+
+                {% with total_findings=high_findings|add:medium_findings|add:low_findings %}
+
+
+                    <!-- HIGH -->
+
+                    <div class="severity-item">
+
+                        <div class="severity-header">
+
+                            <span class="severity-name">
+                                High Severity
+                            </span>
+
+                            <span class="severity-count">
+                                {{ high_findings }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="severity-track">
+
+                            {% if total_findings > 0 %}
+
+                                <div
+                                    class="severity-bar severity-high"
+                                    style="width:
+                                        {% widthratio high_findings total_findings 100 %}%;"
+                                >
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MEDIUM -->
+
+                    <div class="severity-item">
+
+                        <div class="severity-header">
+
+                            <span class="severity-name">
+                                Medium Severity
+                            </span>
+
+                            <span class="severity-count">
+                                {{ medium_findings }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="severity-track">
+
+                            {% if total_findings > 0 %}
+
+                                <div
+                                    class="severity-bar severity-medium"
+                                    style="width:
+                                        {% widthratio medium_findings total_findings 100 %}%;"
+                                >
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LOW -->
+
+                    <div class="severity-item">
+
+                        <div class="severity-header">
+
+                            <span class="severity-name">
+                                Low Severity
+                            </span>
+
+                            <span class="severity-count">
+                                {{ low_findings }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="severity-track">
+
+                            {% if total_findings > 0 %}
+
+                                <div
+                                    class="severity-bar severity-low"
+                                    style="width:
+                                        {% widthratio low_findings total_findings 100 %}%;"
+                                >
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                {% endwith %}
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         LATEST SECURITY SCORE
+    ========================= -->
+
+    {% if latest_scan %}
+
+    <div class="section">
+
+        <h2 class="section-title">
+            Security Score Overview
+        </h2>
+
+
+        <div class="score-panel">
+
+
+            <div class="score-circle">
+
+                <div class="score-number
+
+                    {% if latest_scan.score >= 80 %}
+
+                        score-good
+
+                    {% elif latest_scan.score >= 60 %}
+
+                        score-medium
+
+                    {% else %}
+
+                        score-bad
+
+                    {% endif %}
+
+                ">
+
+                    {{ latest_scan.score }}
+
+                </div>
+
+
+                <div class="score-label">
+                    out of 100
+                </div>
+
+            </div>
+
+
+            <div>
+
+
+                <div class="score-progress-header">
+
+                    <span class="score-progress-title">
+                        Latest Security Score
+                    </span>
+
+                    <span class="score-progress-value">
+                        {{ latest_scan.score }}/100
+                    </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div class="progress-bar"></div>
+
+                </div>
+
+
+                <div class="score-description">
+
+                    {% if latest_scan.risk_level == "Low" %}
+
+                        The latest assessment indicates a
+                        low-risk security posture.
+
+                    {% elif latest_scan.risk_level == "Medium" %}
+
+                        The latest assessment indicates a
+                        medium-risk security posture and
+                        should be reviewed.
+
+                    {% else %}
+
+                        The latest assessment indicates a
+                        high-risk security posture and
+                        requires attention.
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =========================
+         LATEST ASSESSMENT
+    ========================= -->
+
+    {% if latest_scan %}
+
+    <div class="section">
+
+        <h2 class="section-title">
+            Latest Security Assessment
+        </h2>
+
+
+        <div class="latest-grid">
+
+
+            <div class="latest-item">
+
+                <span class="latest-label">
+                    Target
+                </span>
+
+                <div class="latest-value">
+                    {{ latest_scan.target }}
+                </div>
+
+            </div>
+
+
+            <div class="latest-item">
+
+                <span class="latest-label">
+                    Security Score
+                </span>
+
+                <div class="latest-value
+
+                    {% if latest_scan.score >= 80 %}
+
+                        score-good
+
+                    {% elif latest_scan.score >= 60 %}
+
+                        score-medium
+
+                    {% else %}
+
+                        score-bad
+
+                    {% endif %}
+
+                ">
+
+                    {{ latest_scan.score }}/100
+
+                </div>
+
+            </div>
+
+
+            <div class="latest-item">
+
+                <span class="latest-label">
+                    Risk Level
+                </span>
+
+                <div class="latest-value">
+
+
+                    {% if latest_scan.risk_level == "High" %}
+
+                        <span class="badge badge-high">
+                            High
+                        </span>
+
+                    {% elif latest_scan.risk_level == "Medium" %}
+
+                        <span class="badge badge-medium">
+                            Medium
+                        </span>
+
+                    {% else %}
+
+                        <span class="badge badge-low">
+                            Low
+                        </span>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+            <div class="latest-item">
+
+                <span class="latest-label">
+                    Total Risk Points
+                </span>
+
+                <div class="latest-value">
+                    {{ latest_scan.total_risk }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <a
+            href="/history/{{ latest_scan.id }}/"
+            class="new-scan"
+        >
+            View Full Assessment →
+        </a>
+
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =========================
+         SECURITY POSTURE TRENDS
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            📈 Security Posture Trends
+        </h2>
+
+        <p class="section-subtitle">
+            Historical view of your security posture across completed scans.
+        </p>
+
+
+        {% if posture_trends %}
+
+
+            <!-- POSTURE SUMMARY -->
+
+            <div class="trend-summary-grid">
+
+
+                <div class="trend-summary-card">
+
+                    <span class="trend-label">
+                        Total Scans
+                    </span>
+
+                    <strong class="trend-value">
+                        {{ posture_summary.total_scans }}
+                    </strong>
+
+                </div>
+
+
+                <div class="trend-summary-card">
+
+                    <span class="trend-label">
+                        First Score
+                    </span>
+
+                    <strong class="trend-value">
+
+                        {{ posture_summary.first_score }}/100
+
+                    </strong>
+
+                </div>
+
+
+                <div class="trend-summary-card">
+
+                    <span class="trend-label">
+                        Current Score
+                    </span>
+
+                    <strong class="trend-value">
+
+                        {{ posture_summary.current_score }}/100
+
+                    </strong>
+
+                </div>
+
+
+                <div class="trend-summary-card">
+
+                    <span class="trend-label">
+                        Score Change
+                    </span>
+
+                    <strong
+                        class="trend-value
+
+                            {% if posture_summary.score_change > 0 %}
+
+                                score-good
+
+                            {% elif posture_summary.score_change < 0 %}
+
+                                score-bad
+
+                            {% endif %}
+
+                        "
+                    >
+
+                        {% if posture_summary.score_change > 0 %}
+
+                            +{{ posture_summary.score_change }}
+
+                        {% else %}
+
+                            {{ posture_summary.score_change }}
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- TREND TABLE -->
+
+            <div class="trend-table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Scan
+                            </th>
+
+                            <th>
+                                Target
+                            </th>
+
+                            <th>
+                                Security Score
+                            </th>
+
+                            <th>
+                                Risk Points
+                            </th>
+
+                            <th>
+                                Findings
+                            </th>
+
+                            <th>
+                                Risk Level
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for trend in posture_trends %}
+
+                        <tr>
+
+
+                            <td>
+                                #{{ trend.scan_id }}
+                            </td>
+
+
+                            <td class="target-cell">
+                                {{ trend.target }}
+                            </td>
+
+
+                            <td>
+
+                                <strong
+                                    class="
+
+                                        {% if trend.score >= 80 %}
+
+                                            score-good
+
+                                        {% elif trend.score >= 60 %}
+
+                                            score-medium
+
+                                        {% else %}
+
+                                            score-bad
+
+                                        {% endif %}
+
+                                    "
+                                >
+
+                                    {{ trend.score }}/100
+
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                {{ trend.total_risk }}
+                            </td>
+
+
+                            <td>
+                                {{ trend.finding_count }}
+                            </td>
+
+
+                            <td>
+
+
+                                {% if trend.risk_level == "High" %}
+
+                                    <span class="badge badge-high">
+                                        High
+                                    </span>
+
+                                {% elif trend.risk_level == "Medium" %}
+
+                                    <span class="badge badge-medium">
+                                        Medium
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-low">
+                                        Low
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                            <td>
+
+                                {{ trend.created_at|date:"d M Y, h:i A" }}
+
+                            </td>
+
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty-state">
+
+                <p>
+                    No posture trend data is available yet.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- =========================
+         FINDINGS SUMMARY
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            Findings Summary
+        </h2>
+
+
+        <div class="risk-summary">
+
+
+            <div class="risk-card high">
+
+                <div class="risk-card-title">
+                    High Severity Findings
+                </div>
+
+                <div class="risk-card-number">
+                    {{ high_findings }}
+                </div>
+
+            </div>
+
+
+            <div class="risk-card medium">
+
+                <div class="risk-card-title">
+                    Medium Severity Findings
+                </div>
+
+                <div class="risk-card-number">
+                    {{ medium_findings }}
+                </div>
+
+            </div>
+
+
+            <div class="risk-card low">
+
+                <div class="risk-card-title">
+                    Low Severity Findings
+                </div>
+
+                <div class="risk-card-number">
+                    {{ low_findings }}
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         RECENT SCANS
+    ========================= -->
+
+    <div class="section">
+
+        <h2 class="section-title">
+            Recent Security Scans
+        </h2>
+
+
+        {% if recent_scans %}
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Target
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Score
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for scan in recent_scans %}
+
+                        <tr>
+
+
+                            <td class="target-cell">
+                                {{ scan.target }}
+                            </td>
+
+
+                            <td>
+                                {{ scan.target_type }}
+                            </td>
+
+
+                            <td>
+
+                                <strong
+                                    class="
+
+                                        {% if scan.score >= 80 %}
+
+                                            score-good
+
+                                        {% elif scan.score >= 60 %}
+
+                                            score-medium
+
+                                        {% else %}
+
+                                            score-bad
+
+                                        {% endif %}
+
+                                    "
+                                >
+
+                                    {{ scan.score }}/100
+
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+
+
+                                {% if scan.risk_level == "High" %}
+
+                                    <span class="badge badge-high">
+                                        High
+                                    </span>
+
+                                {% elif scan.risk_level == "Medium" %}
+
+                                    <span class="badge badge-medium">
+                                        Medium
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-low">
+                                        Low
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                            <td>
+
+                                {{ scan.created_at|date:"d M Y, h:i A" }}
+
+                            </td>
+
+
+                            <td>
+
+                                <a
+                                    href="/history/{{ scan.id }}/"
+                                    class="view-btn"
+                                >
+                                    View
+                                </a>
+
+                            </td>
+
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty-state">
+
+                <p>
+                    No security scans have been performed yet.
+                </p>
+
+
+                <a
+                    href="/scan/"
+                    class="new-scan"
+                >
+                    🔍 Start Your First Scan
+                </a>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+    <!-- =========================
+         ACTIONS
+    ========================= -->
+
+    <div style="margin-bottom: 35px;">
+
+
+        <a
+            href="/scan/"
+            class="new-scan"
+        >
+            🔍 Start New Scan
+        </a>
+
+
+        <a
+            href="/history/"
+            class="new-scan history-btn"
+        >
+            📋 View Scan History
+        </a>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

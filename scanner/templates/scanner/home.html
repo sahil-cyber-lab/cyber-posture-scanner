@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cybersecurity Posture Scanner</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.18), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.10), transparent 30%),
+                #020617;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+
+        .navbar {
+            width: 100%;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+            background: rgba(2, 6, 23, 0.75);
+            backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .brand-icon {
+            font-size: 25px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-button {
+            padding: 9px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #cbd5e1;
+            border: 1px solid #334155;
+            transition: 0.2s;
+        }
+
+        .nav-button:hover {
+            color: white;
+            border-color: #64748b;
+            background: rgba(51, 65, 85, 0.35);
+        }
+
+        .nav-primary {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+
+        .nav-primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        /* Hero */
+
+        .hero {
+            max-width: 1100px;
+            margin: auto;
+            padding: 95px 25px 70px;
+            text-align: center;
+        }
+
+        .security-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            border-radius: 30px;
+            background: rgba(37, 99, 235, 0.10);
+            color: #93c5fd;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(38px, 6vw, 68px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #f8fafc;
+        }
+
+        .hero h1 span {
+            color: #3b82f6;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            margin: 25px auto;
+            color: #94a3b8;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+
+        /* Buttons */
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 170px;
+            padding: 14px 22px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .primary-button {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        .primary-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .secondary-button {
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .secondary-button:hover {
+            border-color: #64748b;
+            transform: translateY(-2px);
+        }
+
+        /* Features */
+
+        .features-section {
+            max-width: 1100px;
+            margin: auto;
+            padding: 20px 25px 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            margin: 0 0 10px;
+            font-size: 30px;
+            color: #f8fafc;
+        }
+
+        .section-title p {
+            margin: 0;
+            color: #64748b;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .feature-card {
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            background: rgba(15, 23, 42, 0.70);
+            transition: 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.45);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .feature-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: rgba(37, 99, 235, 0.14);
+            font-size: 22px;
+            margin-bottom: 17px;
+        }
+
+        .feature-card h3 {
+            margin: 0 0 10px;
+            color: #f8fafc;
+            font-size: 17px;
+        }
+
+        .feature-card p {
+            margin: 0;
+            color: #94a3b8;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Footer */
+
+        footer {
+            border-top: 1px solid rgba(148, 163, 184, 0.12);
+            padding: 25px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 800px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navbar {
+                padding: 18px 5%;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding-top: 65px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="navbar">
+
+        <div class="brand">
+            <span class="brand-icon">🛡️</span>
+            <span>Cybersecurity Posture Scanner</span>
+        </div>
+
+        <div class="nav-links">
+
+            {% if request.user.is_authenticated %}
+
+                <a href="/dashboard/" class="nav-button">
+                    📊 Dashboard
+                </a>
+
+                <a href="/scan/" class="nav-button nav-primary">
+                    + New Scan
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}" class="nav-button">
+                    Login
+                </a>
+
+                <a href="{% url 'signup' %}" class="nav-button nav-primary">
+                    Sign Up
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+
+    <!-- Hero Section -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="security-badge">
+                🔒 Security Assessment Platform
+            </div>
+
+            <h1>
+                Understand Your
+                <span>Security Posture</span>
+            </h1>
+
+            <p class="hero-description">
+                Analyze your systems, discover exposed services,
+                identify security weaknesses, evaluate TLS and web
+                security, and understand your overall cybersecurity risk
+                from a single platform.
+            </p>
+
+            <div class="hero-buttons">
+
+                {% if request.user.is_authenticated %}
+
+                    <a href="/scan/" class="button primary-button">
+                        🔍 Start New Scan
+                    </a>
+
+                    <a href="/dashboard/" class="button secondary-button">
+                        📊 Security Dashboard
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}" class="button primary-button">
+                        🔐 Login to Start
+                    </a>
+
+                    <a href="{% url 'signup' %}" class="button secondary-button">
+                        Create Account
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- Features -->
+
+        <section class="features-section">
+
+            <div class="section-title">
+
+                <h2>Security Analysis Capabilities</h2>
+
+                <p>
+                    Assess multiple layers of your security posture.
+                </p>
+
+            </div>
+
+
+            <div class="features">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🌐
+                    </div>
+
+                    <h3>Network & Port Scanning</h3>
+
+                    <p>
+                        Discover open ports, running services,
+                        products and detected versions using
+                        network reconnaissance.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🕸️
+                    </div>
+
+                    <h3>Web Security Analysis</h3>
+
+                    <p>
+                        Analyze security headers, HTTP behavior,
+                        cookies, CORS configuration and exposed
+                        server information.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🔐
+                    </div>
+
+                    <h3>TLS / SSL Assessment</h3>
+
+                    <p>
+                        Check certificate validity, hostname
+                        verification, TLS version, cipher and
+                        certificate expiration.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🐞
+                    </div>
+
+                    <h3>CVE Intelligence</h3>
+
+                    <p>
+                        Correlate detected products and versions
+                        with known vulnerability information and
+                        CVSS severity.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📈
+                    </div>
+
+                    <h3>Risk Scoring</h3>
+
+                    <p>
+                        Combine security findings into an overall
+                        risk score and security posture level.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📄
+                    </div>
+
+                    <h3>Security Reports</h3>
+
+                    <p>
+                        Generate detailed security assessment
+                        reports containing findings, risk data,
+                        recommendations and technical details.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        Cybersecurity Posture Scanner
+        &nbsp;•&nbsp;
+        Security Assessment Platform
+
+    </footer>
+
+</body>
+</html>
