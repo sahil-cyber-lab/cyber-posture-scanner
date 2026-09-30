@@ -8,89 +8,262 @@
     <title>Security Scanner</title>
 
     <style>
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
         * {
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #020617;
+            --bg2: #071225;
+            --panel: #0f172a;
+            --panel2: #111c33;
+            --panel3: #0b162b;
+            --border: #1e293b;
+            --blue: #2563eb;
+            --blue-light: #60a5fa;
+            --cyan: #22d3ee;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --muted2: #64748b;
+        }
+
+        html {
+            background: var(--bg);
+        }
+
         body {
             margin: 0;
+            min-height: 100vh;
             font-family: Arial, Helvetica, sans-serif;
-            background: #f4f7fb;
-            color: #1f2937;
+            color: var(--text);
+
+            background:
+                radial-gradient(
+                    circle at 15% 10%,
+                    rgba(37, 99, 235, 0.16),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(34, 211, 238, 0.08),
+                    transparent 25%
+                ),
+                linear-gradient(
+                    180deg,
+                    #020617 0%,
+                    #071225 50%,
+                    #020617 100%
+                );
         }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .scan-navbar {
+            width: 100%;
+            min-height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 16px 42px;
+
+            background: rgba(2, 6, 23, 0.94);
+            border-bottom: 1px solid #172554;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.35);
+
+            backdrop-filter: blur(12px);
+
+            position: relative;
+            z-index: 10;
+        }
+
+        .scan-brand {
+            color: #f8fafc;
+            font-size: 21px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.2px;
+        }
+
+        .scan-brand:hover {
+            color: var(--blue-light);
+        }
+
+        .scan-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .scan-nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.2s ease;
+        }
+
+        .scan-nav-links a:hover {
+            color: var(--blue-light);
+        }
+
+        .scan-nav-links .active {
+            color: var(--blue-light);
+        }
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
 
         .container {
             width: 92%;
             max-width: 1250px;
-            margin: 35px auto 60px;
+            margin: 34px auto 70px;
         }
 
-        /* =========================
-           HEADER
-        ========================= */
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
 
         .page-header {
-            background: linear-gradient(135deg, #111827, #1f2937);
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(59, 130, 246, 0.25),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #020617 0%,
+                    #0b1b3a 55%,
+                    #102a56 100%
+                );
+
             color: white;
-            padding: 28px 30px;
-            border-radius: 16px;
+
+            padding: 34px;
+
+            border-radius: 18px;
+            border: 1px solid #1e40af;
+
             margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+
+            box-shadow:
+                0 18px 50px rgba(0, 0, 0, 0.38),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        .page-header::after {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            right: -60px;
+            bottom: -90px;
+
+            border-radius: 50%;
+
+            background: rgba(59, 130, 246, 0.12);
+
+            filter: blur(5px);
+        }
+
+        .page-header h1,
+        .page-header p {
+            position: relative;
+            z-index: 1;
         }
 
         .page-header h1 {
             margin: 0 0 8px;
             font-size: 30px;
+            color: #f8fafc;
+            letter-spacing: -0.4px;
         }
 
         .page-header p {
             margin: 0;
-            color: #cbd5e1;
+            color: #94a3b8;
+            font-size: 15px;
         }
 
-        /* =========================
+        /* =====================================================
            ERROR
-        ========================= */
+        ===================================================== */
 
         .error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #fecaca;
+            background: rgba(127, 29, 29, 0.25);
+            color: #fca5a5;
+            border: 1px solid #7f1d1d;
+
             padding: 14px 16px;
             border-radius: 10px;
+
             margin-bottom: 20px;
+
             font-weight: bold;
         }
 
-        /* =========================
-           SECTION
-        ========================= */
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
 
         .section {
-            margin-top: 28px;
+            margin-top: 30px;
         }
 
         .section-title {
             font-size: 22px;
             margin-bottom: 15px;
-            color: #111827;
+            color: #f8fafc;
         }
 
-        /* =========================
-           CARD
-        ========================= */
+        /* =====================================================
+           COMMON CARDS
+        ===================================================== */
+
+        .card,
+        .stat-card,
+        .assessment-card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(15, 23, 42, 0.98),
+                    rgba(11, 24, 45, 0.98)
+                );
+
+            color: var(--text);
+
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            box-shadow:
+                0 14px 40px rgba(0, 0, 0, 0.28),
+                inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        }
 
         .card {
-            background: white;
-            border-radius: 14px;
             padding: 24px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
-            border: 1px solid #e5e7eb;
         }
 
-        /* =========================
+        /* =====================================================
            SCAN FORM
-        ========================= */
+        ===================================================== */
 
         .scan-form {
             display: flex;
@@ -99,56 +272,114 @@
         }
 
         .scan-form label {
+            color: #e2e8f0;
             font-weight: bold;
         }
 
         input[type="text"] {
             width: 100%;
             max-width: 700px;
+
             padding: 13px 15px;
-            border: 1px solid #cbd5e1;
+
+            background: #070f20;
+            color: #f8fafc;
+
+            border: 1px solid #334155;
             border-radius: 9px;
+
             font-size: 15px;
             outline: none;
+
+            box-shadow:
+                inset 0 1px 2px rgba(0, 0, 0, 0.25);
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        input[type="text"]::placeholder {
+            color: #64748b;
         }
 
         input[type="text"]:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+            border-color: var(--blue);
+
+            box-shadow:
+                0 0 0 3px rgba(59, 130, 246, 0.14),
+                0 0 20px rgba(37, 99, 235, 0.08);
+
+            background: #081226;
         }
 
         .authorization {
             display: flex;
             align-items: center;
+
             gap: 8px;
+
+            color: #94a3b8 !important;
+
             font-weight: normal !important;
-            color: #475569;
         }
 
         .authorization input {
             width: 16px;
             height: 16px;
+            accent-color: var(--blue);
         }
+
+        /* =====================================================
+           SCAN BUTTON
+        ===================================================== */
 
         .scan-button {
             width: fit-content;
+
             padding: 12px 22px;
-            border: none;
+
+            border: 1px solid #3b82f6;
             border-radius: 9px;
-            background: #2563eb;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
             color: white;
+
             font-size: 15px;
             font-weight: bold;
+
             cursor: pointer;
+
+            box-shadow:
+                0 8px 22px rgba(37, 99, 235, 0.22);
+
+            transition: all 0.2s ease;
         }
 
         .scan-button:hover {
-            background: #1d4ed8;
+            background:
+                linear-gradient(
+                    135deg,
+                    #3b82f6,
+                    #2563eb
+                );
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 12px 28px rgba(37, 99, 235, 0.32);
         }
 
-        /* =========================
+        /* =====================================================
            INFO GRID
-        ========================= */
+        ===================================================== */
 
         .info-grid {
             display: grid;
@@ -157,83 +388,98 @@
         }
 
         .info-item {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: #0b162b;
+
+            border: 1px solid var(--border);
             border-radius: 10px;
+
             padding: 16px;
+
+            color: #e2e8f0;
         }
 
         .info-label {
             display: block;
-            color: #64748b;
+
+            color: var(--muted2);
+
             font-size: 13px;
+
             margin-bottom: 6px;
         }
 
         .info-value {
             font-weight: bold;
             word-break: break-word;
+            color: #f8fafc;
         }
 
-        /* =========================
+        /* =====================================================
            STAT CARDS
-        ========================= */
+        ===================================================== */
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+
             gap: 18px;
+
             margin-top: 18px;
         }
 
         .stat-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
             padding: 22px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
         }
 
         .stat-label {
-            color: #64748b;
+            color: var(--muted2);
+
             font-size: 14px;
+
             margin-bottom: 8px;
         }
 
         .stat-value {
             font-size: 28px;
             font-weight: bold;
-            color: #111827;
+            color: #f8fafc;
         }
 
-        /* =========================
+        /* =====================================================
            TABLE
-        ========================= */
+        ===================================================== */
 
         .table-wrapper {
             overflow-x: auto;
-            background: white;
+
+            background: #0b162b;
+
             border-radius: 12px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            background: #0b162b;
         }
 
         th,
         td {
             padding: 14px 15px;
-            border-bottom: 1px solid #e5e7eb;
+
+            border-bottom: 1px solid var(--border);
+
             text-align: left;
             vertical-align: top;
+
+            color: #cbd5e1;
         }
 
         th {
-            background: #f8fafc;
-            color: #475569;
+            background: #111c33;
+            color: #cbd5e1;
+
             font-size: 14px;
         }
 
@@ -241,185 +487,162 @@
             border-bottom: none;
         }
 
-        /* =========================
+        tr:hover td {
+            background: rgba(30, 64, 175, 0.08);
+        }
+
+        /* =====================================================
            STATUS
-        ========================= */
+        ===================================================== */
 
         .status {
             display: inline-block;
+
             padding: 5px 10px;
+
             border-radius: 999px;
+
             font-size: 13px;
             font-weight: bold;
         }
 
         .status-good {
-            background: #dcfce7;
-            color: #166534;
+            background: rgba(22, 101, 52, 0.25);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.2);
         }
 
         .status-warning {
-            background: #fef3c7;
-            color: #92400e;
+            background: rgba(146, 64, 14, 0.25);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
         }
 
         .status-danger {
-            background: #fee2e2;
-            color: #991b1b;
+            background: rgba(127, 29, 29, 0.3);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.2);
         }
 
         .status-info {
-            background: #dbeafe;
-            color: #1e40af;
+            background: rgba(30, 64, 175, 0.25);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.2);
         }
 
-        /* =========================
-           SCORE
-        ========================= */
+        /* =====================================================
+           ASSESSMENT
+        ===================================================== */
 
         .assessment-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
             padding: 25px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07);
         }
 
         .assessment-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr;
+
+            grid-template-columns:
+                1.2fr 1fr 1fr;
+
             gap: 18px;
         }
 
-        .score-box {
-            background: #f8fafc;
+        .score-box,
+        .risk-box,
+        .points-box {
             border-radius: 14px;
+
             padding: 22px;
+
             text-align: center;
-            border: 1px solid #e2e8f0;
+
+            background: #0b162b;
+
+            border: 1px solid var(--border);
         }
 
         .score-number {
             font-size: 46px;
             font-weight: bold;
-            color: #2563eb;
+
+            color: #60a5fa;
+
+            margin-top: 8px;
         }
 
         .score-label {
-            color: #64748b;
+            color: var(--muted2);
             font-size: 14px;
         }
 
         .risk-box {
-            background: #fff7ed;
-            border: 1px solid #fed7aa;
-            border-radius: 14px;
-            padding: 22px;
-            text-align: center;
+            background:
+                rgba(120, 53, 15, 0.18);
+
+            border-color:
+                rgba(245, 158, 11, 0.25);
         }
 
         .risk-value {
             font-size: 30px;
             font-weight: bold;
-            color: #c2410c;
+
+            color: #fbbf24;
+
             margin-top: 8px;
         }
 
         .points-box {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            border-radius: 14px;
-            padding: 22px;
-            text-align: center;
+            background:
+                rgba(127, 29, 29, 0.18);
+
+            border-color:
+                rgba(239, 68, 68, 0.25);
         }
 
         .points-value {
             font-size: 30px;
             font-weight: bold;
-            color: #b91c1c;
+
+            color: #f87171;
+
             margin-top: 8px;
         }
 
-        /* =========================
+        /* =====================================================
            FINDINGS
-        ========================= */
+        ===================================================== */
 
         .findings-container {
             margin-top: 20px;
         }
 
         .finding {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-left: 5px solid #94a3b8;
+            background:
+                linear-gradient(
+                    145deg,
+                    #0f172a,
+                    #0b162b
+                );
+
+            color: #cbd5e1;
+
+            border: 1px solid var(--border);
+
+            border-left: 5px solid #64748b;
+
             border-radius: 12px;
+
             padding: 22px;
+
             margin-top: 16px;
-            box-shadow: 0 3px 14px rgba(15, 23, 42, 0.05);
-        }
 
-        .finding-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 15px;
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.22);
         }
-
-        .finding-title {
-            margin: 0;
-            font-size: 18px;
-            color: #111827;
-        }
-
-        .finding-meta {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .meta-item {
-            background: #f8fafc;
-            padding: 10px 12px;
-            border-radius: 8px;
-        }
-
-        .meta-label {
-            display: block;
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 3px;
-        }
-
-        .meta-value {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .finding-section {
-            margin-top: 14px;
-            line-height: 1.6;
-        }
-
-        .finding-section strong {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .recommendation {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 9px;
-            padding: 14px;
-            margin-top: 14px;
-            line-height: 1.6;
-        }
-
-        /* Severity borders */
 
         .finding-high {
-            border-left-color: #dc2626;
+            border-left-color: #ef4444;
         }
 
         .finding-medium {
@@ -434,54 +657,171 @@
             border-left-color: #64748b;
         }
 
-        /* =========================
+        .finding-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 15px;
+
+            margin-bottom: 15px;
+        }
+
+        .finding-title {
+            margin: 0;
+
+            font-size: 18px;
+
+            color: #f8fafc;
+        }
+
+        .finding-meta {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 16px;
+        }
+
+        .meta-item {
+            background: #0b162b;
+
+            padding: 10px 12px;
+
+            border-radius: 8px;
+
+            border: 1px solid var(--border);
+        }
+
+        .meta-label {
+            display: block;
+
+            font-size: 12px;
+
+            color: var(--muted2);
+
+            margin-bottom: 3px;
+        }
+
+        .meta-value {
+            font-weight: bold;
+
+            font-size: 14px;
+
+            color: #e2e8f0;
+        }
+
+        .finding-section {
+            margin-top: 14px;
+
+            line-height: 1.6;
+
+            color: #cbd5e1;
+        }
+
+        .finding-section strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #f8fafc;
+        }
+
+        .recommendation {
+            background:
+                rgba(30, 64, 175, 0.12);
+
+            border: 1px solid #1e3a8a;
+
+            color: #cbd5e1;
+
+            border-radius: 9px;
+
+            padding: 14px;
+
+            margin-top: 14px;
+
+            line-height: 1.6;
+        }
+
+        .recommendation strong {
+            color: #93c5fd;
+        }
+
+        /* =====================================================
            NMAP
-        ========================= */
+        ===================================================== */
 
         .port-open {
-            color: #166534;
+            color: #4ade80;
             font-weight: bold;
         }
 
         .port-closed {
-            color: #991b1b;
+            color: #f87171;
             font-weight: bold;
         }
 
-        /* =========================
+        /* =====================================================
            EMPTY STATE
-        ========================= */
+        ===================================================== */
 
         .empty-state {
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
+            background: #0b162b;
+
+            border: 1px dashed #334155;
+
             padding: 20px;
+
             border-radius: 10px;
-            color: #64748b;
+
+            color: var(--muted);
         }
 
-        /* =========================
+        /* =====================================================
            HISTORY
-        ========================= */
+        ===================================================== */
 
         .history-link {
             display: inline-block;
+
             margin-top: 30px;
+
             padding: 11px 18px;
-            background: #111827;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #111c33,
+                    #172554
+                );
+
             color: white;
+
             text-decoration: none;
+
+            border: 1px solid #1e3a8a;
+
             border-radius: 9px;
+
             font-weight: bold;
+
+            transition: 0.2s ease;
         }
 
         .history-link:hover {
-            background: #374151;
+            background: #172554;
+
+            transform: translateY(-1px);
         }
 
-        /* =========================
+        /* =====================================================
            RESPONSIVE
-        ========================= */
+        ===================================================== */
 
         @media (max-width: 800px) {
 
@@ -510,127 +850,188 @@
                 white-space: nowrap;
             }
         }
+
+        @media (max-width: 700px) {
+
+            .scan-navbar {
+                padding: 14px 20px;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+            .scan-nav-links {
+                gap: 16px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 
 
 <body>
 
-<div class="container">
+    <!-- =====================================================
+         NAVBAR
+    ===================================================== -->
 
-    <!-- =========================
-         PAGE HEADER
-    ========================= -->
+    <nav class="scan-navbar">
 
-    <div class="page-header">
+        <a
+            href="/dashboard/"
+            class="scan-brand"
+        >
+            🛡️ Cybersecurity Posture Scanner
+        </a>
 
-        <h1>🛡️ Security Scanner</h1>
+        <div class="scan-nav-links">
 
-        <p>
-            Web, network and TLS security assessment platform
-        </p>
+            <a href="/dashboard/">
+                Dashboard
+            </a>
 
-    </div>
+            <a
+                href="/scan/"
+                class="active"
+            >
+                New Scan
+            </a>
 
+            <a href="/history/">
+                History
+            </a>
 
-    <!-- =========================
-         ERROR
-    ========================= -->
-
-    {% if error %}
-
-        <div class="error">
-            {{ error }}
         </div>
 
-    {% endif %}
+    </nav>
 
 
-    <!-- =========================
-         SCAN FORM
-    ========================= -->
+    <div class="container">
 
-    <div class="card">
+        <!-- =================================================
+             PAGE HEADER
+        ================================================= -->
 
-        <form method="POST" class="scan-form">
+        <div class="page-header">
 
-            {% csrf_token %}
+            <h1>
+                🛡️ Security Scanner
+            </h1>
 
-            <label for="target">
-                Target
-            </label>
+            <p>
+                Web, network and TLS security assessment platform
+            </p>
 
-            <input
-                id="target"
-                type="text"
-                name="target"
-                placeholder="IP, domain or URL"
-                value="{{ target|default:'' }}"
-                required
+        </div>
+
+
+        <!-- =================================================
+             ERROR
+        ================================================= -->
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             SCAN FORM
+        ================================================= -->
+
+        <div class="card">
+
+            <form
+                method="POST"
+                class="scan-form"
             >
 
-            <label class="authorization">
+                {% csrf_token %}
+
+                <label for="target">
+                    Target
+                </label>
 
                 <input
-                    type="checkbox"
-                    name="authorized"
+                    id="target"
+                    type="text"
+                    name="target"
+                    placeholder="IP, domain or URL"
+                    value="{{ target|default:'' }}"
                     required
                 >
 
-                I confirm that I am authorized to assess this target.
+                <label class="authorization">
 
-            </label>
+                    <input
+                        type="checkbox"
+                        name="authorized"
+                        required
+                    >
 
-            <button
-                type="submit"
-                class="scan-button"
-            >
-                🔍 Start Security Assessment
-            </button>
+                    I confirm that I am authorized to assess this target.
 
-        </form>
+                </label>
 
-    </div>
+                <button
+                    type="submit"
+                    class="scan-button"
+                >
+                    🔍 Start Security Assessment
+                </button>
 
+            </form>
 
-    <!-- =========================
-         SCAN INFORMATION
-    ========================= -->
-
-    {% if target %}
-
-        <div class="section">
-
-            <h2 class="section-title">
-                📋 Scan Information
-            </h2>
-
-            <div class="card">
-
-                <div class="info-grid">
-
-                    <div class="info-item">
-
-                        <span class="info-label">
-                            Target
-                        </span>
-
-                        <span class="info-value">
-                            {{ target }}
-                        </span>
-
-                    </div>
+        </div>
 
 
-                    <div class="info-item">
+        <!-- =================================================
+             SCAN INFORMATION
+        ================================================= -->
 
-                        <span class="info-label">
-                            Target Type
-                        </span>
+        {% if target %}
 
-                        <span class="info-value">
-                            {{ target_type }}
-                        </span>
+            <div class="section">
+
+                <h2 class="section-title">
+                    📋 Scan Information
+                </h2>
+
+                <div class="card">
+
+                    <div class="info-grid">
+
+                        <div class="info-item">
+
+                            <span class="info-label">
+                                Target
+                            </span>
+
+                            <span class="info-value">
+                                {{ target }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="info-item">
+
+                            <span class="info-label">
+                                Target Type
+                            </span>
+
+                            <span class="info-value">
+                                {{ target_type }}
+                            </span>
+
+                        </div>
 
                     </div>
 
@@ -638,23 +1039,222 @@
 
             </div>
 
-        </div>
-
-    {% endif %}
+        {% endif %}
 
 
-    <!-- =========================
-         NMAP RESULTS
-    ========================= -->
+        <!-- =================================================
+             NMAP RESULTS
+        ================================================= -->
 
-    {% if target_type == "IP address" %}
+        {% if target_type == "IP address" %}
 
-        {% if scan_result and scan_result.success %}
+            {% if scan_result and scan_result.success %}
+
+                <div class="section">
+
+                    <h2 class="section-title">
+                        📊 Network Security Assessment
+                    </h2>
+
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+
+                            <div class="stat-label">
+                                Total Detected Ports
+                            </div>
+
+                            <div class="stat-value">
+                                {{ scan_result.total_ports }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-label">
+                                Open Ports
+                            </div>
+
+                            <div class="stat-value">
+                                {{ scan_result.open_ports|length }}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {% if scan_result.ports %}
+
+                        <div
+                            class="card"
+                            style="margin-top:18px;padding:0;overflow:hidden;"
+                        >
+
+                            <div class="table-wrapper">
+
+                                <table>
+
+                                    <thead>
+
+                                        <tr>
+
+                                            <th>
+                                                Port
+                                            </th>
+
+                                            <th>
+                                                Protocol
+                                            </th>
+
+                                            <th>
+                                                State
+                                            </th>
+
+                                            <th>
+                                                Service
+                                            </th>
+
+                                            <th>
+                                                Product
+                                            </th>
+
+                                            <th>
+                                                Version
+                                            </th>
+
+                                            <th>
+                                                Extra Information
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+
+
+                                    <tbody>
+
+                                        {% for port in scan_result.ports %}
+
+                                            <tr>
+
+                                                <td>
+                                                    <strong>
+                                                        {{ port.port }}
+                                                    </strong>
+                                                </td>
+
+
+                                                <td>
+                                                    {{ port.protocol|default:"-" }}
+                                                </td>
+
+
+                                                <td>
+
+                                                    {% if port.state == "open" %}
+
+                                                        <span class="status status-good">
+                                                            ● Open
+                                                        </span>
+
+                                                    {% elif port.state == "closed" %}
+
+                                                        <span class="status status-danger">
+                                                            ● Closed
+                                                        </span>
+
+                                                    {% else %}
+
+                                                        <span class="status status-info">
+                                                            {{ port.state }}
+                                                        </span>
+
+                                                    {% endif %}
+
+                                                </td>
+
+
+                                                <td>
+                                                    {{ port.service|default:"-" }}
+                                                </td>
+
+
+                                                <td>
+
+                                                    {% if port.product %}
+                                                        {{ port.product }}
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {% if port.version %}
+                                                        {{ port.version }}
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+
+                                                </td>
+
+
+                                                <td>
+
+                                                    {% if port.extrainfo %}
+                                                        {{ port.extrainfo }}
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+
+                                                </td>
+
+                                            </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    {% else %}
+
+                        <div
+                            class="empty-state"
+                            style="margin-top:18px;"
+                        >
+                            No open TCP ports were detected.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+
+        <!-- =================================================
+             WEB SECURITY RESULTS
+        ================================================= -->
+
+        {% if web_result and web_result.success %}
 
             <div class="section">
 
                 <h2 class="section-title">
-                    📊 Network Security Assessment
+                    🌐 Web Security Assessment
                 </h2>
 
 
@@ -663,11 +1263,11 @@
                     <div class="stat-card">
 
                         <div class="stat-label">
-                            Total Detected Ports
+                            HTTP Status Code
                         </div>
 
                         <div class="stat-value">
-                            {{ scan_result.total_ports }}
+                            {{ web_result.status_code }}
                         </div>
 
                     </div>
@@ -676,11 +1276,15 @@
                     <div class="stat-card">
 
                         <div class="stat-label">
-                            Open Ports
+                            Security Headers Checked
                         </div>
 
                         <div class="stat-value">
-                            {{ scan_result.open_ports|length }}
+
+                            {% with header_count=0 %}
+                                6
+                            {% endwith %}
+
                         </div>
 
                     </div>
@@ -688,9 +1292,106 @@
                 </div>
 
 
-                {% if scan_result.ports %}
+                <div
+                    class="card"
+                    style="margin-top:18px;padding:0;overflow:hidden;"
+                >
 
-                    <div class="card" style="margin-top: 18px; padding: 0; overflow: hidden;">
+                    <h3 style="padding:20px 20px 0;color:#f8fafc;">
+                        Security Headers
+                    </h3>
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Security Header
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                {% for finding in web_result.findings %}
+
+                                    {% if finding.type == "security_header" %}
+
+                                        <tr>
+
+                                            <td>
+
+                                                <strong>
+                                                    {{ finding.header }}
+                                                </strong>
+
+                                            </td>
+
+
+                                            <td>
+
+                                                {% if finding.status == "Missing" %}
+
+                                                    <span class="status status-danger">
+                                                        ❌ Missing
+                                                    </span>
+
+                                                {% else %}
+
+                                                    <span class="status status-good">
+                                                        ✅ Present
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </td>
+
+                                        </tr>
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             TLS RESULTS
+        ================================================= -->
+
+        {% if tls_result %}
+
+            <div class="section">
+
+                <h2 class="section-title">
+                    🔐 TLS Security Assessment
+                </h2>
+
+
+                {% if tls_result.success %}
+
+                    <div class="card">
 
                         <div class="table-wrapper">
 
@@ -700,13 +1401,13 @@
 
                                     <tr>
 
-                                        <th>Port</th>
-                                        <th>Protocol</th>
-                                        <th>State</th>
-                                        <th>Service</th>
-                                        <th>Product</th>
-                                        <th>Version</th>
-                                        <th>Extra Information</th>
+                                        <th>
+                                            Security Check
+                                        </th>
+
+                                        <th>
+                                            Result
+                                        </th>
 
                                     </tr>
 
@@ -715,87 +1416,166 @@
 
                                 <tbody>
 
-                                    {% for port in scan_result.ports %}
+                                    <tr>
 
-                                        <tr>
+                                        <td>
+                                            <strong>
+                                                Hostname
+                                            </strong>
+                                        </td>
 
-                                            <td>
-                                                <strong>
-                                                    {{ port.port }}
-                                                </strong>
-                                            </td>
+                                        <td>
+                                            {{ tls_result.hostname }}
+                                        </td>
 
-
-                                            <td>
-                                                {{ port.protocol|default:"-" }}
-                                            </td>
-
-
-                                            <td>
-
-                                                {% if port.state == "open" %}
-
-                                                    <span class="status status-good">
-                                                        ● Open
-                                                    </span>
-
-                                                {% elif port.state == "closed" %}
-
-                                                    <span class="status status-danger">
-                                                        ● Closed
-                                                    </span>
-
-                                                {% else %}
-
-                                                    <span class="status status-info">
-                                                        {{ port.state }}
-                                                    </span>
-
-                                                {% endif %}
-
-                                            </td>
+                                    </tr>
 
 
-                                            <td>
-                                                {{ port.service|default:"-" }}
-                                            </td>
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                Hostname Validation
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            {% if tls_result.hostname_valid %}
+
+                                                <span class="status status-good">
+                                                    ✅ Valid
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="status status-danger">
+                                                    ❌ Mismatch
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
 
 
-                                            <td>
+                                    <tr>
 
-                                                {% if port.product %}
-                                                    {{ port.product }}
-                                                {% else %}
-                                                    -
-                                                {% endif %}
+                                        <td>
+                                            <strong>
+                                                TLS Version
+                                            </strong>
+                                        </td>
 
-                                            </td>
+                                        <td>
+                                            {{ tls_result.tls_version }}
+                                        </td>
 
-
-                                            <td>
-
-                                                {% if port.version %}
-                                                    {{ port.version }}
-                                                {% else %}
-                                                    -
-                                                {% endif %}
-
-                                            </td>
+                                    </tr>
 
 
-                                            <td>
+                                    <tr>
 
-                                                {% if port.extrainfo %}
-                                                    {{ port.extrainfo }}
-                                                {% else %}
-                                                    -
-                                                {% endif %}
+                                        <td>
+                                            <strong>
+                                                Cipher
+                                            </strong>
+                                        </td>
 
-                                            </td>
+                                        <td>
+                                            {{ tls_result.cipher }}
+                                        </td>
 
-                                        </tr>
+                                    </tr>
 
-                                    {% endfor %}
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                Certificate Status
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            {% if tls_result.certificate_status == "Valid" %}
+
+                                                <span class="status status-good">
+                                                    ✅ Valid
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="status status-danger">
+                                                    ❌ Expired
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                Certificate Issuer
+                                            </strong>
+                                        </td>
+
+                                        <td>
+                                            {{ tls_result.issuer }}
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                Expiry Date
+                                            </strong>
+                                        </td>
+
+                                        <td>
+                                            {{ tls_result.expiry_date }}
+                                        </td>
+
+                                    </tr>
+
+
+                                    <tr>
+
+                                        <td>
+                                            <strong>
+                                                Days Remaining
+                                            </strong>
+                                        </td>
+
+                                        <td>
+
+                                            {% if tls_result.days_remaining <= 30 %}
+
+                                                <span class="status status-warning">
+                                                    ⚠️ {{ tls_result.days_remaining }} days
+                                                </span>
+
+                                            {% else %}
+
+                                                <span class="status status-good">
+                                                    ✅ {{ tls_result.days_remaining }} days
+                                                </span>
+
+                                            {% endif %}
+
+                                        </td>
+
+                                    </tr>
 
                                 </tbody>
 
@@ -807,8 +1587,55 @@
 
                 {% else %}
 
-                    <div class="empty-state" style="margin-top: 18px;">
-                        No open TCP ports were detected.
+                    <div class="finding finding-high">
+
+                        <div class="finding-header">
+
+                            <h3 class="finding-title">
+                                ⚠️ TLS Validation Issue
+                            </h3>
+
+                            <span class="status status-danger">
+                                Security Issue
+                            </span>
+
+                        </div>
+
+
+                        {% if tls_result.hostname_valid == False %}
+
+                            <div class="finding-section">
+
+                                <strong>
+                                    Hostname Validation
+                                </strong>
+
+                                ❌ Certificate hostname mismatch
+
+                            </div>
+
+
+                            <div class="finding-section">
+
+                                The TLS certificate does not match
+                                the target hostname.
+
+                            </div>
+
+                        {% else %}
+
+                            <div class="finding-section">
+
+                                <strong>
+                                    TLS Error
+                                </strong>
+
+                                {{ tls_result.error }}
+
+                            </div>
+
+                        {% endif %}
+
                     </div>
 
                 {% endif %}
@@ -817,706 +1644,318 @@
 
         {% endif %}
 
-    {% endif %}
 
+        <!-- =================================================
+             SECURITY ASSESSMENT
+        ================================================= -->
 
-    <!-- =========================
-         WEB SCAN RESULTS
-    ========================= -->
+        {% if risk_result %}
 
-    {% if web_result and web_result.success %}
+            <div class="section">
 
-        <div class="section">
+                <h2 class="section-title">
+                    🛡️ Security Assessment
+                </h2>
 
-            <h2 class="section-title">
-                🌐 Web Security Assessment
-            </h2>
 
+                <div class="assessment-card">
 
-            <div class="stats-grid">
+                    <div class="assessment-grid">
 
-                <div class="stat-card">
+                        <!-- SCORE -->
 
-                    <div class="stat-label">
-                        HTTP Status Code
-                    </div>
+                        <div class="score-box">
 
-                    <div class="stat-value">
-                        {{ web_result.status_code }}
-                    </div>
+                            <div class="score-label">
+                                Security Score
+                            </div>
 
-                </div>
+                            <div class="score-number">
+                                {{ risk_result.score }}/100
+                            </div>
 
+                        </div>
 
-                <div class="stat-card">
 
-                    <div class="stat-label">
-                        Security Headers Checked
-                    </div>
+                        <!-- RISK -->
 
-                    <div class="stat-value">
+                        <div class="risk-box">
 
-                        {% with header_count=0 %}
+                            <div class="score-label">
+                                Risk Level
+                            </div>
 
-                            6
+                            <div class="risk-value">
+                                {{ risk_result.risk_level }}
+                            </div>
 
-                        {% endwith %}
+                        </div>
 
-                    </div>
 
-                </div>
+                        <!-- RISK POINTS -->
 
-            </div>
+                        <div class="points-box">
 
+                            <div class="score-label">
+                                Total Risk Points
+                            </div>
 
-            <div class="card" style="margin-top: 18px; padding: 0; overflow: hidden;">
+                            <div class="points-value">
+                                {{ risk_result.total_risk }}
+                            </div>
 
-                <h3 style="padding: 20px 20px 0;">
-                    Security Headers
-                </h3>
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Security Header</th>
-                                <th>Status</th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody>
-
-                            {% for finding in web_result.findings %}
-
-                                {% if finding.type == "security_header" %}
-
-                                    <tr>
-
-                                        <td>
-                                            <strong>
-                                                {{ finding.header }}
-                                            </strong>
-                                        </td>
-
-
-                                        <td>
-
-                                            {% if finding.status == "Missing" %}
-
-                                                <span class="status status-danger">
-                                                    ❌ Missing
-                                                </span>
-
-                                            {% else %}
-
-                                                <span class="status status-good">
-                                                    ✅ Present
-                                                </span>
-
-                                            {% endif %}
-
-                                        </td>
-
-                                    </tr>
-
-                                {% endif %}
-
-                            {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    {% endif %}
-
-
-    <!-- =========================
-         TLS RESULTS
-    ========================= -->
-
-    {% if tls_result %}
-
-        <div class="section">
-
-            <h2 class="section-title">
-                🔐 TLS Security Assessment
-            </h2>
-
-
-            {% if tls_result.success %}
-
-                <div class="card">
-
-                    <div class="table-wrapper">
-
-                        <table>
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>Security Check</th>
-                                    <th>Result</th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody>
-
-                                <!-- Hostname -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Hostname</strong>
-                                    </td>
-
-                                    <td>
-                                        {{ tls_result.hostname }}
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Hostname Validation -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Hostname Validation</strong>
-                                    </td>
-
-                                    <td>
-
-                                        {% if tls_result.hostname_valid %}
-
-                                            <span class="status status-good">
-                                                ✅ Valid
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="status status-danger">
-                                                ❌ Mismatch
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- TLS Version -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>TLS Version</strong>
-                                    </td>
-
-                                    <td>
-                                        {{ tls_result.tls_version }}
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Cipher -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Cipher</strong>
-                                    </td>
-
-                                    <td>
-                                        {{ tls_result.cipher }}
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Certificate Status -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Certificate Status</strong>
-                                    </td>
-
-                                    <td>
-
-                                        {% if tls_result.certificate_status == "Valid" %}
-
-                                            <span class="status status-good">
-                                                ✅ Valid
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="status status-danger">
-                                                ❌ Expired
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Issuer -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Certificate Issuer</strong>
-                                    </td>
-
-                                    <td>
-                                        {{ tls_result.issuer }}
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Expiry Date -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Expiry Date</strong>
-                                    </td>
-
-                                    <td>
-                                        {{ tls_result.expiry_date }}
-                                    </td>
-
-                                </tr>
-
-
-                                <!-- Days Remaining -->
-
-                                <tr>
-
-                                    <td>
-                                        <strong>Days Remaining</strong>
-                                    </td>
-
-                                    <td>
-
-                                        {% if tls_result.days_remaining <= 30 %}
-
-                                            <span class="status status-warning">
-                                                ⚠️ {{ tls_result.days_remaining }} days
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="status status-good">
-                                                ✅ {{ tls_result.days_remaining }} days
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-                                </tr>
-
-                            </tbody>
-
-                        </table>
+                        </div>
 
                     </div>
 
                 </div>
 
-            {% else %}
 
-                <div class="finding finding-high">
+                <!-- =========================================
+                     SECURITY FINDINGS
+                ========================================== -->
 
-                    <div class="finding-header">
+                {% if risk_result.findings %}
 
-                        <h3 class="finding-title">
-                            ⚠️ TLS Validation Issue
+                    <div class="findings-container">
+
+                        <h3 class="section-title">
+                            🚨 Security Findings
                         </h3>
 
-                        <span class="status status-danger">
-                            Security Issue
-                        </span>
 
-                    </div>
+                        {% for finding in risk_result.findings %}
 
+                            {% if finding.severity == "High" %}
 
-                    {% if tls_result.hostname_valid == False %}
+                                <div class="finding finding-high">
 
-                        <div class="finding-section">
+                            {% elif finding.severity == "Medium" %}
 
-                            <strong>
-                                Hostname Validation
-                            </strong>
+                                <div class="finding finding-medium">
 
-                            ❌ Certificate hostname mismatch
+                            {% elif finding.severity == "Low" %}
 
-                        </div>
+                                <div class="finding finding-low">
 
+                            {% else %}
 
-                        <div class="finding-section">
-
-                            The TLS certificate does not match
-                            the target hostname.
-
-                        </div>
-
-                    {% else %}
-
-                        <div class="finding-section">
-
-                            <strong>
-                                TLS Error
-                            </strong>
-
-                            {{ tls_result.error }}
-
-                        </div>
-
-                    {% endif %}
-
-                </div>
-
-            {% endif %}
-
-        </div>
-
-    {% endif %}
-
-
-    <!-- =========================
-         SECURITY ASSESSMENT
-    ========================= -->
-
-    {% if risk_result %}
-
-        <div class="section">
-
-            <h2 class="section-title">
-                🛡️ Security Assessment
-            </h2>
-
-
-            <div class="assessment-card">
-
-                <div class="assessment-grid">
-
-                    <!-- Score -->
-
-                    <div class="score-box">
-
-                        <div class="score-label">
-                            Security Score
-                        </div>
-
-                        <div class="score-number">
-                            {{ risk_result.score }}/100
-                        </div>
-
-                    </div>
-
-
-                    <!-- Risk Level -->
-
-                    <div class="risk-box">
-
-                        <div class="score-label">
-                            Risk Level
-                        </div>
-
-                        <div class="risk-value">
-                            {{ risk_result.risk_level }}
-                        </div>
-
-                    </div>
-
-
-                    <!-- Risk Points -->
-
-                    <div class="points-box">
-
-                        <div class="score-label">
-                            Total Risk Points
-                        </div>
-
-                        <div class="points-value">
-                            {{ risk_result.total_risk }}
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =========================
-                 SECURITY FINDINGS
-            ========================= -->
-
-            {% if risk_result.findings %}
-
-                <div class="findings-container">
-
-                    <h3 class="section-title">
-                        🚨 Security Findings
-                    </h3>
-
-
-                    {% for finding in risk_result.findings %}
-
-                        {% if finding.severity == "High" %}
-
-                            <div class="finding finding-high">
-
-                        {% elif finding.severity == "Medium" %}
-
-                            <div class="finding finding-medium">
-
-                        {% elif finding.severity == "Low" %}
-
-                            <div class="finding finding-low">
-
-                        {% else %}
-
-                            <div class="finding finding-info">
-
-                        {% endif %}
-
-
-                            <div class="finding-header">
-
-                                <h4 class="finding-title">
-                                    {{ finding.title }}
-                                </h4>
-
-
-                                {% if finding.severity == "High" %}
-
-                                    <span class="status status-danger">
-                                        High
-                                    </span>
-
-                                {% elif finding.severity == "Medium" %}
-
-                                    <span class="status status-warning">
-                                        Medium
-                                    </span>
-
-                                {% elif finding.severity == "Low" %}
-
-                                    <span class="status status-info">
-                                        Low
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="status status-info">
-                                        Informational
-                                    </span>
-
-                                {% endif %}
-
-                            </div>
-
-
-                            <div class="finding-meta">
-
-                                <div class="meta-item">
-
-                                    <span class="meta-label">
-                                        Port
-                                    </span>
-
-                                    <span class="meta-value">
-                                        {{ finding.port }}
-                                    </span>
-
-                                </div>
-
-
-                                <div class="meta-item">
-
-                                    <span class="meta-label">
-                                        Service
-                                    </span>
-
-                                    <span class="meta-value">
-                                        {{ finding.service }}
-                                    </span>
-
-                                </div>
-
-
-                                {% if finding.product %}
-
-                                    <div class="meta-item">
-
-                                        <span class="meta-label">
-                                            Product
-                                        </span>
-
-                                        <span class="meta-value">
-                                            {{ finding.product }}
-                                        </span>
-
-                                    </div>
-
-                                {% endif %}
-
-
-                                {% if finding.version %}
-
-                                    <div class="meta-item">
-
-                                        <span class="meta-label">
-                                            Version
-                                        </span>
-
-                                        <span class="meta-value">
-                                            {{ finding.version }}
-                                        </span>
-
-                                    </div>
-
-                                {% endif %}
-
-
-                                {% if finding.extrainfo %}
-
-                                    <div class="meta-item">
-
-                                        <span class="meta-label">
-                                            Extra Information
-                                        </span>
-
-                                        <span class="meta-value">
-                                            {{ finding.extrainfo }}
-                                        </span>
-
-                                    </div>
-
-                                {% endif %}
-
-
-                                <div class="meta-item">
-
-                                    <span class="meta-label">
-                                        Risk Points
-                                    </span>
-
-                                    <span class="meta-value">
-                                        {{ finding.risk_points }}
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="finding-section">
-
-                                <strong>
-                                    Description
-                                </strong>
-
-                                {{ finding.description }}
-
-                            </div>
-
-
-                            {% if finding.recommendation %}
-
-                                <div class="recommendation">
-
-                                    <strong>
-                                        💡 Recommendation
-                                    </strong>
-
-                                    {{ finding.recommendation }}
-
-                                </div>
+                                <div class="finding finding-info">
 
                             {% endif %}
 
 
-                        </div>
+                                <div class="finding-header">
 
-                    {% endfor %}
-
-                </div>
-
-            {% else %}
-
-                <div class="empty-state">
-
-                    ✅ No security findings detected.
-
-                </div>
-
-            {% endif %}
-
-        </div>
-
-    {% endif %}
+                                    <h4 class="finding-title">
+                                        {{ finding.title }}
+                                    </h4>
 
 
-    <!-- =========================
-         SCAN ERROR
-    ========================= -->
+                                    {% if finding.severity == "High" %}
 
-    {% if scan_result and not scan_result.success %}
+                                        <span class="status status-danger">
+                                            High
+                                        </span>
 
-        <div class="section">
+                                    {% elif finding.severity == "Medium" %}
 
-            <h2 class="section-title">
-                ❌ Scan Error
-            </h2>
+                                        <span class="status status-warning">
+                                            Medium
+                                        </span>
 
-            <div class="error">
-                {{ scan_result.error }}
+                                    {% elif finding.severity == "Low" %}
+
+                                        <span class="status status-info">
+                                            Low
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status status-info">
+                                            Informational
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="finding-meta">
+
+                                    <div class="meta-item">
+
+                                        <span class="meta-label">
+                                            Port
+                                        </span>
+
+                                        <span class="meta-value">
+                                            {{ finding.port }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="meta-item">
+
+                                        <span class="meta-label">
+                                            Service
+                                        </span>
+
+                                        <span class="meta-value">
+                                            {{ finding.service }}
+                                        </span>
+
+                                    </div>
+
+
+                                    {% if finding.product %}
+
+                                        <div class="meta-item">
+
+                                            <span class="meta-label">
+                                                Product
+                                            </span>
+
+                                            <span class="meta-value">
+                                                {{ finding.product }}
+                                            </span>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    {% if finding.version %}
+
+                                        <div class="meta-item">
+
+                                            <span class="meta-label">
+                                                Version
+                                            </span>
+
+                                            <span class="meta-value">
+                                                {{ finding.version }}
+                                            </span>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    {% if finding.extrainfo %}
+
+                                        <div class="meta-item">
+
+                                            <span class="meta-label">
+                                                Extra Information
+                                            </span>
+
+                                            <span class="meta-value">
+                                                {{ finding.extrainfo }}
+                                            </span>
+
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <div class="meta-item">
+
+                                        <span class="meta-label">
+                                            Risk Points
+                                        </span>
+
+                                        <span class="meta-value">
+                                            {{ finding.risk_points }}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="finding-section">
+
+                                    <strong>
+                                        Description
+                                    </strong>
+
+                                    {{ finding.description }}
+
+                                </div>
+
+
+                                {% if finding.recommendation %}
+
+                                    <div class="recommendation">
+
+                                        <strong>
+                                            💡 Recommendation
+                                        </strong>
+
+                                        {{ finding.recommendation }}
+
+                                    </div>
+
+                                {% endif %}
+
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        ✅ No security findings detected.
+
+                    </div>
+
+                {% endif %}
+
             </div>
 
-        </div>
-
-    {% endif %}
+        {% endif %}
 
 
-    <!-- =========================
-         HISTORY
-    ========================= -->
+        <!-- =================================================
+             SCAN ERROR
+        ================================================= -->
 
-    <a
-        href="/history/"
-        class="history-link"
-    >
-        📜 View Scan History
-    </a>
+        {% if scan_result and not scan_result.success %}
 
-</div>
+            <div class="section">
+
+                <h2 class="section-title">
+                    ❌ Scan Error
+                </h2>
+
+                <div class="error">
+                    {{ scan_result.error }}
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             HISTORY
+        ================================================= -->
+
+        <a
+            href="/history/"
+            class="history-link"
+        >
+            📜 View Scan History
+        </a>
+
+    </div>
 
 </body>
+
 </html>
