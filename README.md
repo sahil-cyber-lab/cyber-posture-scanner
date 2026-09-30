@@ -315,10 +315,33 @@ The goal is to provide a consolidated view of the security posture rather than r
 ---
 
 ## 📸 Screenshots
+### Home Page
 
-Screenshots of the dashboard, scan results, vulnerability findings, and generated security reports will be added here.
+![Home Page](Screenshots/Home-1.png)
 
----
+![Home Page](Screenshots/Home-2.png)
+
+
+### Scan Page
+
+![Scan Page](Screenshots/Scan%20page.png)
+
+
+### Scan Results
+
+![Scan Results](Screenshots/Scan%20Result-1.png)
+
+![Scan Results](Screenshots/Scan%20Result-2.png)
+
+![Scan Results](Screenshots/Scan%20Result-3.png)
+
+![Scan Results](Screenshots/Scan%20Result-4.png)
+
+![Scan Results](Screenshots/Scan%20Result-5.png)
+
+![Scan Results](Screenshots/Scan%20Result-6.png)
+
+![Scan Results](Screenshots/Scan%20Result-7.png)
 
 ## 🎯 Project Goals
 
