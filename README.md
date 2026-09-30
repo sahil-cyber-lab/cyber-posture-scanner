@@ -343,6 +343,66 @@ The goal is to provide a consolidated view of the security posture rather than r
 
 ![Scan Results](Screenshots/Scan%20Result-7.png)
 
+### Dashboard
+
+![Dashboard](Screenshots/Dashboard-1.png)
+
+![Dashboard](Screenshots/Dashboard-2.png)
+
+![Dashboard](Screenshots/Dashboard-3.png)
+
+![Dashboard](Screenshots/Dashboard-4.png)
+
+
+### Scan History
+
+![Scan History](Screenshots/History-1.png)
+
+![Scan History](Screenshots/History-2.png)
+
+![Scan History](Screenshots/History-3.png)
+
+![Scan History](Screenshots/History-4.png)
+
+![Scan History](Screenshots/History-5.png)
+
+![Scan History](Screenshots/History-6.png)
+
+
+### Scan Comparison
+
+![Scan Comparison](Screenshots/Comparison-1.png)
+
+![Scan Comparison](Screenshots/Comparison-2.png)
+
+![Scan Comparison](Screenshots/Comparison-3.png)
+
+
+### Security Report
+
+![Security Report](Screenshots/Report.png)
+
+![Security Report](Screenshots/Report-1.png)
+
+![Security Report](Screenshots/Report-2.png)
+
+![Security Report](Screenshots/Report-3.png)
+
+![Security Report](Screenshots/Report-4.png)
+
+![Security Report](Screenshots/Report-5.png)
+
+![Security Report](Screenshots/Report-6.png)
+
+![Security Report](Screenshots/Report-7.png)
+
+
+### Additional Screens
+
+![Scan History](Screenshots/Scan%20histoy.png)
+
+![PDF Download](Screenshots/pdf%20download.png)
+
 ## 🎯 Project Goals
 
 This project was developed to explore how multiple cybersecurity assessment techniques can be integrated into a single platform.
